@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas应用 - 趣味刮刮卡</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/scratch.css">
+</head>
+
+<body>
+  <div class="ctrlpic">
+    <a href="../index.html" class="ctrlpic-back">返回首页</a>
+  </div>
+  <div class="filter"></div>
+  <canvas id="starrySky"></canvas>
+  <ul class="scratchlist">
+    <li class="scratchitem">
+      <div class="scratchcard">刮</div>
+    </li>
+    <li class="scratchitem">
+      <div class="scratchcard">刮</div>
+    </li>
+    <li class="scratchitem">
+      <div class="scratchcard">刮</div>
+    </li>
+    <li class="scratchitem">
+      <div class="scratchcard">刮</div>
+    </li>
+    <li class="scratchitem">
+      <div class="scratchcard">刮</div>
+    </li>
+    <li class="scratchitem">
+      <div class="scratchcard">刮</div>
+    </li>
+    <li class="scratchitem">
+      <div class="scratchcard">刮</div>
+    </li>
+    <li class="scratchitem">
+      <div class="scratchcard">刮</div>
+    </li>
+    <li class="scratchitem">
+      <div class="scratchcard">刮</div>
+    </li>
+    <li class="scratchitem">
+      <div class="scratchcard">刮</div>
+    </li>
+  </ul>
+  <div class="dialog">
+    <div class="dialog-content">
+      <canvas id="scratchcard"></canvas>
+    </div>
+  </div>
+  <script src="../lib/jquery.min.js"></script>
+  <script src="../javascripts/starrySky.js"></script>
+  <script>
+    const body = document.getElementsByTagName('body')[0];
+    const canvas = $('#scratchcard')[0];
+    const context = canvas.getContext('2d');
+    const father = $('.dialog-content');
+    const W = father.width();
+    const H = father.height();
+    const awards = ['很遗憾，再接再厉', '恭喜您获得10元代金券', '很遗憾，再接再厉', '恭喜您获得高考一日游', '很遗憾，再接再厉'];
+    let isScratch = false;
+    let opacity = 1;
+    starrySky();
+    canvas.width = W;
+    canvas.height = H;
+    canvas.addEventListener('mousedown', moveStart, false);
+    canvas.addEventListener('touchstart', moveStart, false);
+    canvas.addEventListener('mousemove', move, false);
+    canvas.addEventListener('touchmove', move, false);
+    canvas.addEventListener('mouseup', moveEnd, false);
+    canvas.addEventListener('touchend', moveEnd, false);
+    $('.scratchitem').on('click', function () {
+      $(this).addClass('active');
+      setTimeout(() => {
+        $(this).hide();
+        $('.dialog').show();
+        getScratchcard();
+      }, 1000)
+    })
+    $('.dialog').on('click', function (e) {
+      if (e.target.className === 'dialog') {
+        $(this).hide();
+      }
+    })
+    function moveStart() {
+      isScratch = true
+      context.globalCompositeOperation = 'destination-out';
+    }
+    function move(e) {
+      const offset = father.offset();
+      const offsetX = offset.left;
+      const offsetY = offset.top;
+      let coordX = e.clientX - offsetX;
+      let coordY = e.clientY - offsetY;
+      if (isScratch && opacity === 1) {
+        context.beginPath();
+        context.arc(coordX, coordY, 40, 0, 2 * Math.PI);
+        context.fill();
+      }
+    }
+    function moveEnd() {
+      isScratch = false;
+      context.globalCompositeOperation = 'source-over';
+      if (getPoint() > 30) {
+        // context.globalCompositeOperation = 'destination-out';
+        context.clearRect(0, 0, W, H);
+        // context.fillStyle = 'rgba(0,0,0,0)';
+        // context.fillRect(0, 0, W, H);
+      }
+    }
+    function getScratchcard() {
+      const index = Math.floor(Math.random() * awards.length);
+      const award = awards[index];
+      let gradient = context.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, H);
+      let bgurl = '';
+      context.fillStyle = "#e71717";
+      context.fillRect(0, 0, W, H);
+      setFont(32, index);
+      context.fillText(award, W / 2, H / 2);
+      bgurl = canvas.toDataURL('image/png', 1);
+      canvas.style.background = 'url(' + bgurl + ')';
+      context.clearRect(0, 0, W, H);
+      context.fillStyle = gradient;
+      gradient.addColorStop(1, "#682303");
+      gradient.addColorStop(0, "#e71717");
+      context.fillRect(0, 0, W, H);
+      setFont(120, 1);
+      context.fillText('刮', W / 2, H / 2);
+    }
+
+    function setFont(size, index) {
+      context.font = "normal " + size + "px sans-serif";
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      if (index % 2 > 0) {
+        context.fillStyle = 'gold';
+        context.shadowColor = 'gold';
+        context.shadowBlur = 5;
+      } else {
+        context.fillStyle = '#000';
+        context.shadowBlur = 0;
+      }
+    }
+
+    function getPoint() {
+      const allPoint = context.getImageData(0, 0, W, H).data;
+      let pointArr = [];
+      let per = 0;
+      for (let index = 3; index < allPoint.length; index += 4) {
+        const element = allPoint[index];
+        if (element < 128) {
+          pointArr.push(element);
+        }
+      };
+      per = ((pointArr.length / (allPoint.length / 4)) * 100).toFixed(2);
+      return per;
+    }
+
+    function removeColor() {
+
+    }
+  </script>
+</body>
+
+</html>

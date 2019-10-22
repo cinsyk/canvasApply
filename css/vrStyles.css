@@ -1,0 +1,216 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,700');
+
+/******************* FIXES FOR CN VERSION *******************/
+.cn .ctrlDesc{font-size: 10px;}
+.cn #btnVR .ctrlDesc{left: -10px;}
+html, body{
+	margin: 0;
+	padding:0;
+	overflow: hidden;
+	background: #393533;
+	color:#fff;
+	font-family: "Roboto", sans-serif;
+	font-weight: 300;
+}
+#pageMain{position: absolute;
+	top: 0;
+	bottom:0;
+	left:0;
+	right:0;
+	overflow: hidden;
+}
+
+/******************* ON-SCREEN CONTROLS *******************/
+.ctrls{
+	width: 70px;
+	height: 45px;
+	position: absolute;
+	display: block;
+	bottom: 10px;
+	text-align: center;
+	color: #999;
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+#ctrlKeys{
+	left: 10px;
+}
+#ctrlMouse{
+	left: 100px;
+}
+#ctrlScroll{
+	left: 190px;
+}
+.ctrlIcon{
+	width: 35px;
+	height: 35px;
+	display: inline-block;
+	background: url("../images/icoCtrls.png") 0% 50% / 300% 100% no-repeat;
+}
+#ctrlIcoKeys{
+}
+#ctrlIcoMouse{
+	background-position: 50% 50%;
+}
+#ctrlIcoScroll{
+	background-position: 100% 50%;
+}
+.ctrlDesc{
+	font-size: 6px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	white-space: nowrap;
+	font-weight: 700;
+	display: block;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	pointer-events: none;
+}
+
+/******************* MOBILE HEADS-UP DISPLAY *******************/
+.mobileHUD{
+	width: 100px;
+	height: 120px;
+	position: absolute;
+	top: 25%;
+	margin: -60px 5px 0px;
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 15px;
+	display: block;
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out;
+	pointer-events: none;
+}
+#mobileHUDTilt{
+	right: 50%;
+}
+#mobileHUDTouch{
+	left: 50%;
+}
+.mobileIcon{
+	background: url("../images/icoMobile.png") 0% 50% / 200% 100% no-repeat;
+	width: 100px;
+	height: 100px;
+}
+#hudIcoTouch{
+	background-position: 100% 100%;
+}
+.mobileHUD .ctrlDesc{
+	width: 100%;
+	text-align: center;
+	font-size: 10px;
+	bottom: 5px;
+}
+
+/******************* ROUND BUTTONS *******************/
+#btnCase{
+	position: absolute;
+	bottom: 25px;
+	right: 0px;
+	height: 40px;
+	width: auto;
+	display: block;
+	pointer-events: none;
+}
+.btnBox{
+	display: none;
+	float: left;
+	position: relative;
+	width: 40px;
+	height: 40px;
+	margin-right: 20px;
+	text-align: center;
+	cursor: pointer;
+	pointer-events: auto;
+}
+.btnIcon{
+	width: 100%;
+	height: 100%;
+	border-radius: 20px;
+	background: url("../images/icoBtns.png") 0% 0% / 500% 100% no-repeat;
+	background-color: #99604c;
+	pointer-events: none;
+}
+.btnBox .ctrlDesc{
+	bottom: -15px;
+}
+#btnVR .btnIcon{}
+#btnVRO .btnIcon{background-position: 25% 0%;}
+#btnVREsc .btnIcon{background-position: 50% 0%;}
+#btnEnterFull .btnIcon{background-position: 75% 0%;}
+#btnExitFull .btnIcon{background-position: 100% 0%;}
+
+
+/******************* JOYSTICK *******************/
+.joyStick{position: absolute;pointer-events: none;left:100px;top:100px;display: none;}
+.joyStick circle{fill:none;stroke:#fff;}
+/*.joyStick polygon{fill:#fff;}*/
+#joyIn{transform:translate(-34px, -34px);stroke-width: 6;width: 68px; height: 68px;}
+#joyOut{transform:translate(-60px, -60px);stroke-width: 2;width: 120px; height: 120px;}
+.st1{fill: none;stroke-width: 2;stroke:#888;stroke-linejoin: miter;}
+
+
+/******************* PRELOADER *******************/
+#preloader{
+	width: 300px;
+	height:auto;
+	position: fixed;
+	pointer-events: none;
+	top:50%;
+	left:50%;
+	background: rgba(57, 53, 51, 0.7);
+	transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+	opacity: 0;
+	transform: translateY(10px);
+	margin: -35px 0 0 50px;
+}
+#preHeader{font-size: 26px;}
+#preBar{width: 100px;height:3px;border: 1px solid #99604c;margin: 5px 0px 0px 1px;}
+#preProg{background: #99604c; height: 100%;width: 0%;}
+#preDetail{font-size: 16px;padding-top: 5px;}
+#preButton{
+	background: #99604c;
+	width:220px;
+	height:40px;
+	margin-top: 15px;
+	position: relative;
+	pointer-events: auto;
+	cursor: pointer;
+	transition: all 0.5s ease-in-out;
+	display: none;
+}
+#preButton:hover{
+	background: #ffffff;
+	color: #99604c;
+}
+a{color: #fff;}
+#preButText{
+	position: absolute;
+	top:12px;
+	width:220px;
+	text-align: center;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 1px;
+}
+#preLogo{
+	width: 140px;
+	height: 140px;
+	background: url("../images/ffLogo.png") center center / 100% auto no-repeat;
+	position: absolute;
+	left: -160px;
+	top: 0px;
+	display: none;
+}
+#preloader.visible{opacity: 1;transform: translateY(0px);}
+@media screen and (max-width: 500px){
+	#preloader{
+		margin: 70px 0 0 -110px;
+	}
+	#preLogo{
+		left:0px;
+		top: -160px;
+	}
+}

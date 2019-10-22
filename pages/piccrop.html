@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas应用 - 图片合成与裁剪</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/piccrop.css">
+</head>
+
+<body>
+  <ul class="piclist">
+    <li class="piclist-item">
+      <img src="../images/pic_1.jpg" alt="">
+    </li>
+    <li class="piclist-item">
+      <img src="../images/pic_2.jpg" alt="">
+    </li>
+    <li class="piclist-item">
+      <img src="../images/pic_3.jpg" alt="">
+    </li>
+    <li class="piclist-item">
+      <img src="../images/pic_4.jpg" alt="">
+    </li>
+    <li class="piclist-item">
+      <img src="../images/pic_5.jpg" alt="">
+    </li>
+  </ul>
+  <div class="ctrlbox">
+    <div class="ctrlpic">
+      <button class="ctrlpic-export">导出</button>
+      <button class="ctrlpic-cut">裁剪</button>
+      <a href="../index.html" class="ctrlpic-back">返回首页</a>
+    </div>
+    <div class="showresult">
+      <img id="showresultpic" src="" alt="">
+      <canvas id="showresult" hidden></canvas>
+    </div>
+    <div class="mainpic">
+      <canvas id="corppic"></canvas>
+      <img class="border-pic" src="/">
+    </div>
+  </div>
+  <ul class="synthlist">
+    <li class="synthlist-item">
+      <img src="../images/border_1.png" alt="">
+    </li>
+    <li class="synthlist-item">
+      <img src="../images/border_2.png" alt="">
+    </li>
+    <li class="synthlist-item">
+      <img src="../images/border_3.png" alt="">
+    </li>
+    <li class="synthlist-item">
+      <img src="../images/border_4.png" alt="">
+    </li>
+  </ul>
+  <script src="../lib/jquery.min.js"></script>
+  <script>
+    const rescas = document.getElementById('showresult');  // 获取展示结果的canvas
+    const resctx = rescas.getContext('2d');
+    const resBox = $('.showresult')[0];
+    const resWidth = resBox.clientWidth;
+    const resHeight = resBox.clientHeight;
+    const cas = document.getElementById('corppic'); // 获取图片展示的canvas
+    const ctx = cas.getContext('2d');
+    const father = $('.mainpic')[0];
+    let imgsrc = ''; // 存储当前选择的图片在·
+    let images = null;
+    let fWidth = father.clientWidth;
+    let fHeight = father.clientHeight;
+    let scale = 1;
+    let step = 0.1;
+    let hascanvas = false;
+    let bdimg = null;
+    rescas.width = resWidth;
+    rescas.height = resHeight;
+    cas.width = fWidth;
+    cas.height = fHeight;
+
+    // 获取图片
+    $('.piclist-item').on('click', function () {
+      imgsrc = $(this).find('img').attr('src');
+      images = new Image();
+      images.setAttribute('crossOrigin', 'Anonymous');
+      images.onload = drawImageActualSize;
+      images.src = imgsrc;
+    })
+
+    // 图片缩放
+    $('.mainpic').on('wheel', function (e) {
+      const zoom = e.originalEvent.wheelDelta;
+      const step = 0.1;
+      if (!hascanvas) {
+        return;
+      }
+      if (zoom > 0) {
+        scale += step
+      } else {
+        if (scale < 0.2 || cas.width * scale <= fWidth || cas.height * scale <= fHeight) {
+          return;
+        }
+        scale -= step
+      }
+      scaleImgae();
+    })
+    // 图片裁剪及合成
+    $('.ctrlpic-cut').on('click', function () {
+      if (!hascanvas) {
+        return;
+      }
+      const width = cas.width;
+      const height = cas.height;
+      const x = width / 2 - fWidth / scale / 2;
+      const y = height / 2 - fHeight / scale / 2;
+      resctx.clearRect(0, 0, resWidth, resHeight);
+      resctx.fillStyle = "ffffff";//白色为例子；
+      resctx.fillRect(0, 0, resWidth, resHeight);
+      resctx.drawImage(images, x, y, fWidth / scale, fHeight / scale, 0, 0, resWidth, resHeight);
+      if (bdimg !== null) {
+        resctx.drawImage(bdimg, 0, 0, bdimg.naturalWidth, bdimg.naturalHeight, 0, 0, resWidth, resHeight);
+      }
+      $('#showresultpic').attr('src', rescas.toDataURL("image/jpeg"));
+    })
+    //  选择边框
+    $('.synthlist-item').on('click', function () {
+      var bdimgsrc = $(this).find('img').attr('src');
+      if (bdimg !== null && bdimg.src.indexOf(bdimgsrc.replace('../', '')) > -1) {
+        bdimg = null;
+        $('.border-pic').attr('src', '').hide();
+        return;
+      }
+      bdimg = new Image();
+      bdimg.setAttribute('crossOrigin', 'Anonymous');
+      bdimg.src = bdimgsrc;
+      $('.border-pic').attr('src', bdimgsrc).show();
+    })
+    // 图片导出
+    $('.ctrlpic-export').on('click', function () {
+      if (bdimg) {
+        rescas.toBlob(function (blob) {
+          var a = document.createElement("a");
+          var body = document.getElementsByTagName("body");
+          document.body.appendChild(a);
+          a.download = "img" + ".jpg";
+          a.href = window.URL.createObjectURL(blob);
+          a.click();
+          a.remove();
+        });
+      }
+    })
+
+
+    function drawImageActualSize() {
+      cas.width = images.naturalWidth;
+      cas.height = images.naturalHeight;
+      ctx.drawImage(images, 0, 0);
+      hascanvas = true;
+    }
+
+    function scaleImgae() {
+      ctx.clearRect(0, 0, cas.width, cas.height);
+      ctx.save();
+      ctx.translate(cas.width / 2 - images.width / 2 * scale, cas.height / 2 - images.height / 2 * scale);
+      ctx.scale(scale, scale);
+      ctx.drawImage(images, 0, 0);
+      ctx.restore();
+    }
+
+  </script>
+</body>
+
+</html>

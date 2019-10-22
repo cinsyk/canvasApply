@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!-- saved from url=(0038)http://primerscern.xyz/canvas-demo/gCO -->
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<title>globalCompositeOperation</title>
+	<style>
+		html,
+		body,
+		div,
+		canvas,
+		a {
+			padding: 0;
+			margin: 0;
+			font-size: 0;
+			/*消除inlin-block的间隙*/
+		}
+		.content {
+			overflow: hidden;
+		}
+
+		.canBox {
+			position: relative;
+			float: left;
+			border: 2px solid #b063d1;
+		}
+
+		.choice {
+			float: left;
+		}
+
+		a {
+			display: block;
+			font: 18px/32px 'Microsoft Yahei';
+			height: 32px;
+			border-radius: 5px;
+			margin: 3px 10px;
+			text-align: center;
+			transition: color .1s ease, background .1s ease;
+		}
+
+		.source {
+			color: #ff7d94;
+		}
+
+		.destin {
+			color: #06aef7;
+		}
+
+		.other {
+			color: #00d000
+		}
+
+		a:hover,
+		.check {
+			background: #999;
+			color: #fff;
+			text-decoration: none;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="content">
+		<div class="canBox">
+			<p>当前设置模式为：source-out</p>
+			<canvas id="canvas" width="700" height="500">
+				当前浏览器不支持canvas，请更换浏览器后再试
+			</canvas>
+			<span>*注：图中内容先绘制圆，再绘制三角。</span>
+		</div>
+		<div class="choice">
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="source">source-over</a>
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="source">source-atop</a>
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="source">source-in</a>
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="source check">source-out</a>
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="destin">destination-over</a>
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="destin">destination-atop</a>
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="destin">destination-in</a>
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="destin">destination-out</a>
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="other">lighter</a>
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="other">copy</a>
+			<a href="http://primerscern.xyz/canvas-demo/gCO###" class="other">xor</a>
+		</div>
+	</div>
+
+
+	<script>
+		// 判定是否未IE 或 IE11 或 Edge
+		if (!!window.ActiveXObject ||
+			(/Trident\/7\./).test(navigator.userAgent) ||
+			navigator.userAgent.indexOf("Edge") > -1) {
+
+			// 打印提示
+			document.getElementsByTagName('p')[0].innerHTML = "抱歉！IE和Edge浏览器对此属性支持尚未完美。<br/>请使用新版FireFox或Chrome浏览器。"
+		} else {
+			window.onload = function () {
+				//初始化
+				draw("source-over")
+
+				var a = document.getElementsByTagName('a')
+				for (var i = 0; i < a.length; i++) {
+					a[i].onclick = function () {
+						// 绘制
+						draw(this.text)
+
+						// 转变选中效果
+						document.getElementsByClassName('check')[0].classList.remove('check')
+						this.classList.add('check')
+						return false
+					}
+				}
+			}
+
+			function draw(mode) {
+				// var p = document.getElementsByTagName('p')[0]
+				// p.innerHTML = "当前设置模式为：" + mode
+
+				var canvas = document.getElementById('canvas')
+				var ct = canvas.getContext('2d')
+
+				canvas.width = 400
+				canvas.height = 400
+
+				ct.clearRect(0, 0, 400, 400)
+
+				// 画圆
+				ct.fillStyle = "#ff7d94"
+				ct.arc(200, 200, 100, 0, 2 * Math.PI)
+				ct.fill()
+
+				// 设定操作模式
+				ct.globalCompositeOperation = mode
+				ct.fillStyle = "#06aef7"
+
+				// 画三角形
+				ct.beginPath()
+				ct.moveTo(0, 200)
+				ct.lineTo(400, 300)
+				ct.lineTo(180, 130)
+				ct.closePath()
+
+				ct.fill()
+			}
+		}
+	</script>
+
+
+
+
+
+</body>
+
+</html>

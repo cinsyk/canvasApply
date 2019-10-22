@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>FF 91 VR</title>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no,shrink-to-fit=no">
+	<meta name="description" content="FF 91 VR - Experience Faraday Future&#39;s 3D simulation of their flagship vehicle: FF 91">
+	<meta name="author" content="Faraday Future">
+
+	<meta property="og:title" content="Faraday Future - FF 91 VR">
+	<meta property="og:site_name" content="Faraday Future">
+	<meta property="og:image" content="../images/fb.jpg">
+	<meta property="og:description" content="FF 91 VR - Experience Faraday Future&#39;s 3D simulation of their flagship vehicle: FF 91">
+
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@FaradayFuture">
+	<meta name="twitter:title" content="Faraday Future">
+	<meta name="twitter:description" content="FF 91 VR - Experience Faraday Future&#39;s 3D simulation of their flagship vehicle: FF 91">
+	<meta name="twitter:image" content="../images/fb.jpg">
+	<meta name="twitter:image:width" content="1200">
+	<meta name="twitter:image:height" content="630">
+
+	<link rel="apple-touch-icon" href="../images/appleIcon.png">
+	<link rel="stylesheet" type="text/css" href="../css/vrStyles.css">
+	<script type="text/javascript" async="" src="../javascripts/linkid.js"></script><script async="" src="../javascripts/analytics.js"></script><script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','../javascripts/analytics.js','ga');
+
+		ga('create', 'UA-63053901-2', 'auto');
+		ga('require', 'displayfeatures');
+		ga('require', 'linkid');
+		ga('send', 'pageview');
+	</script>
+</head>
+
+<body>
+<main id="pageMain" style="touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+
+<!-- Desktop controls -->
+<div class="ctrls" id="ctrlKeys" style="opacity: 1;">
+	<div class="ctrlIcon" id="ctrlIcoKeys"></div>
+	<div class="ctrlDesc">Car Controls</div>
+</div>
+<div class="ctrls" id="ctrlMouse" style="opacity: 1;">
+	<div class="ctrlIcon" id="ctrlIcoMouse"></div>
+	<div class="ctrlDesc">Drag camera</div>
+</div>
+<div class="ctrls" id="ctrlScroll" style="opacity: 1;">
+	<div class="ctrlIcon" id="ctrlIcoScroll"></div>
+	<div class="ctrlDesc">Scroll zoom</div>
+</div>
+
+<!-- Mobile HUD -->
+<div class="mobileHUD" id="mobileHUDTilt">
+	<div class="mobileIcon" id="hudIcoTilt"></div>
+	<div class="ctrlDesc">Camera</div>
+</div>
+<div class="mobileHUD" id="mobileHUDTouch">
+	<div class="mobileIcon" id="hudIcoTouch"></div>
+	<div class="ctrlDesc">Car controls</div>
+</div>
+
+<!-- Round Buttons -->
+<div id="btnCase">
+	<div class="btnBox" id="btnVR" style="display: block;">
+		<div class="btnIcon"></div>
+		<div class="ctrlDesc">VR Mode</div>
+	</div>
+	<div class="btnBox" id="btnVRO" style="display: block;">
+		<div class="btnIcon"></div>
+		<div class="ctrlDesc">VR Orbit</div>
+	</div>
+	<div class="btnBox" id="btnVREsc">
+		<div class="btnIcon"></div>
+		<div class="ctrlDesc">Exit VR</div>
+	</div>
+	<div class="btnBox" id="btnEnterFull" style="display: block;">
+		<div class="btnIcon"></div>
+		<div class="ctrlDesc">Fullscreen</div>
+	</div>
+	<div class="btnBox" id="btnExitFull">
+		<div class="btnIcon"></div>
+		<div class="ctrlDesc">Exit</div>
+	</div>
+</div>
+
+<!-- Joystick control -->
+<svg class="joyStick" id="joyOut">
+	<circle cx="60" cy="60" r="42"></circle>
+	<polyline points="49 11 60 2 71 11" class="st1"></polyline>
+	<polyline points="11 49 2 60 11 71" class="st1"></polyline>
+	<polyline points="71 107 60 118 49 107" class="st1"></polyline>
+	<polyline points="107 71 118 60 107 49" class="st1"></polyline>
+</svg>
+<svg class="joyStick" id="joyIn">
+	<circle cx="34" cy="34" r="30"></circle>
+</svg>
+
+<!-- Preloader widget -->
+<div id="preloader" class="">
+	<div id="preHeader">FF 91 VR Test Ride</div>
+	<div id="preBar">
+		<div id="preProg" style="width: 100%;"></div>
+	</div>
+	<div id="preDetail">Tap screen to begin.</div>
+	<div id="preLogo"></div>
+	<a href="https://www.ff.com/us/ff-91">
+		<div id="preButton">
+			<div id="preButText">GO TO FF 91 GALLERY</div>
+		</div>
+	</a>
+</div>
+
+<canvas width="1409" height="937" style="width: 1409px; height: 937px;"></canvas></main>
+
+<!-- Magical goodness -->&nbsp;
+<script src="../javascripts/locale.js"></script>
+<script src="../javascripts/three.js"></script>
+<script src="../javascripts/hammer.js"></script>
+<script src="../javascripts/nosleep.js"></script>
+<script src="../javascripts/TweenLite.js"></script>
+<script src="../javascripts/vr.js"></script>
+
+
+
+</body></html>

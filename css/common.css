@@ -1,0 +1,80 @@
+html,
+body {
+  margin: 0;
+  padding: 0px;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  cursor: url(../images/cur.ico), pointer;
+  text-align: center;
+  background: black;
+  background: linear-gradient(to bottom, #000000 0%, #5788fe 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+ul,
+pre,
+p {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pull-left {
+  float: left;
+}
+
+.clearfix {
+  overflow: hidden;
+}
+
+.ctrlpic {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+}
+
+.ctrlpic * {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 6px 15px;
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+  background-color: transparent;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  cursor: url(../images/cur.ico), pointer;
+  transition: all .3s;
+}
+
+.ctrlpic *:hover,
+.catalog-item:hover,
+.ctrl-left:hover,
+.ctrl-right:hover {
+  animation: breathe 2s ease-in-out infinite;
+}
+
+@keyframes breathe {
+
+  0%,
+  100% {
+    opacity: 0.8;
+    box-shadow: 0px 0px 5px rgba(255, 255, 255, .1);
+  }
+
+  60% {
+    opacity: 1;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, .8);
+  }
+}
+
+#starrySky {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

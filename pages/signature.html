@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas应用 - 手写签名</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <style>
+    body {
+      cursor: url('../images/chalk.ico'), default;
+      background: url('../images/board.jpg') no-repeat center;
+      background-size: 100% 100%;
+    }
+
+    .ctrlpic {
+      top: 40px;
+      right: 50px;
+    }
+
+    .ctrlpic * {
+      color: #000;
+      border: 1px solid #000;
+      cursor: url('../images/chalk.ico'), default;
+    }
+
+    .ctrlpic *:hover {
+      background-color: rgba(0, 0, 0, .1);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="ctrlpic">
+    <button class="redo" style="display: none">恢复</button>
+    <button class="undo" style="display: none">撤销</button>
+    <button class="clearbd">清除</button>
+    <button class="export">导出</button>
+    <a href="../index.html">返回首页</a>
+  </div>
+  <canvas id="signature"></canvas>
+  <script src="../lib/jquery.min.js"></script>
+  <script>
+    const cas = $('#signature')[0];
+    const ctx = cas.getContext('2d');
+    let mousedown = false;
+    let history = [];
+    let step = -1;
+    cas.width = $('body').width();
+    cas.height = $('body').height();
+    ctx.lineWidth = 5;
+    $('#signature').on('mousedown', function (e) {
+      mousedown = true;
+      if (step < history.length - 1) {
+        history.length = step + 1;
+      }
+      ctx.beginPath();
+      ctx.moveTo(e.clientX, e.clientY);
+    })
+    $('#signature').on('mouseup', function (e) {
+      if (mousedown) {
+        mousedown = false;
+        step++;
+      }
+      if (step > -1) {
+        $('.undo').show();
+      }
+      history.push(cas.toDataURL());
+    })
+    $('#signature').on('mousemove', function (e) {
+      if (!mousedown) {
+        return
+      }
+      ctx.strokeStyle = 'rgba(0,0,0,' + (0.4 + Math.random() * 0.2) + ')';
+      ctx.lineTo(e.clientX, e.clientY);
+      ctx.stroke();
+    })
+    $('.clearbd').on('click', function (e) {
+      e.stopPropagation();
+      history = [];
+      step = -1;
+      ctx.clearRect(0, 0, cas.width, cas.height);
+      $('.redo').hide();
+      $('.undo').hide();
+    })
+    $('.redo').on('click', function (e) {
+      e.stopPropagation();
+      step++;
+      let images = new Image();
+      images.src = history[step];
+      images.onload = function () {
+        ctx.drawImage(images, 0, 0);
+      };
+      $('.undo').show();
+      if (step > history.length - 2) {
+        $(this).hide();
+      }
+    })
+    $('.undo').on('click', function (e) {
+      e.stopPropagation();
+      step--;
+      ctx.clearRect(0, 0, cas.width, cas.height);
+      if (step < 0) {
+        $(this).hide();
+        return;
+      }
+      let images = new Image();
+      images.src = history[step];
+      images.onload = function () {
+        ctx.drawImage(images, 0, 0);
+      };
+      $('.redo').show();
+    })
+
+    $('.export').on('click', function () {
+      cas.toBlob(function (blob) {
+        var a = document.createElement("a");
+        var body = document.getElementsByTagName("body");
+        document.body.appendChild(a);
+        a.download = "img" + ".jpg";
+        a.href = window.URL.createObjectURL(blob);
+        console.log(a.href);
+        a.click();
+        a.remove();
+      });
+    })
+  </script>
+</body>
+
+</html>

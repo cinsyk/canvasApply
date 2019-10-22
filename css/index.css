@@ -1,0 +1,64 @@
+.filter {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #fe5757;
+	animation: colorChange 30s ease-in-out infinite;
+	animation-fill-mode: both;
+	mix-blend-mode: overlay;
+}
+
+@keyframes colorChange {
+
+	0%,
+	100% {
+		opacity: 0;
+	}
+
+	50% {
+		opacity: .5;
+	}
+}
+
+#linkScreen,
+.catalog {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.catalog {
+	width: 500px;
+	height: auto;
+}
+
+.title {
+	width: 100%;
+	height: auto;
+}
+
+
+.catalog-item {
+	display: block;
+	width: 100%;
+	height: 56px;
+	margin: 0 auto;
+	font-size: 24px;
+	letter-spacing: 2px;
+	color: #fff;
+	line-height: 52px;
+	text-align: center;
+	text-decoration: none;
+	border: 2px solid #fff;
+	border-radius: 30px;
+	opacity: 0.5;
+	cursor: url(../images/cur.ico), pointer;
+}
+
+
+.catalog-item+.catalog-item {
+	margin-top: 30px;
+}

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas应用 - api介绍</title>
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/apinfo.css">
+</head>
+
+<body>
+  <div class="ctrlpic">
+    <a href="../index.html" class="ctrlpic-back">返回首页</a>
+  </div>
+  <div class="filter"></div>
+  <canvas id="starrySky"></canvas>
+  <ul class="apisinfo">
+    <li class="apinfo">
+      <div class="title">基本用法</div>
+      <ul class="content pull-left" style="padding: 20px 20px 20px 120px;width: 50%">
+        <li>Canvas是一个可以使用脚本（通常为Javascript，其它比如 Java Applets or JavaFX/JavaFX Script）来绘制图形，默认大小为300像素×150像素的HTML元素。</li>
+        <li>&lt;canvas&gt;标签只是图形容器，必须调用它的API来绘制图形。</li>
+        <li>canvas元素不能直接使用css样式来修改宽高，容易出现画布内元素变形</li>
+        <li>getContext()：获取canvas内容对象，该方法可传递一个参数，大多数都是使用2d来进行绘制。</li>
+        <li>moveTo( x, y )： 将笔触移动到指定的坐标(x,y)</li>
+        <li>beginPath()：起始（重置）当前路径</li>
+        <li>closePath()：关闭（结束）当前路径</li>
+        <li>fill()：填充当前绘图（路径）</li>
+        <li>stroke()：绘制已定义的路径</li>
+      </ul>
+      <div class="demo pull-left">
+        <canvas id="demo1"></canvas>
+      </div>
+    </li>
+    <li class="apinfo">
+      <div class="title">canvas坐标系</div>
+      <div class="demo" style="width: 80%; height: 600px;padding-top: 120px;">
+        <canvas id="coord" style="border: 1px solid #fff"></canvas>
+      </div>
+    </li>
+    <li class="apinfo clearfix">
+      <div class="title">绘制形状</div>
+      <ul class="content pull-left">
+        <li>
+          <p>矩形</p>
+          <ul>
+            <li>未填充的矩形：rect( x, y, width, height )</li>
+            <li>填充矩形：fillRect( x, y, width, height )</li>
+            <li>边框矩形：strokeRect( x, y, width, height )</li>
+            <li>清除矩形：clearRect(x, y, width, height)</li>
+          </ul>
+        </li>
+        <li>
+          <p>贝塞尔曲线</p>
+          <ul>
+            <li>一次贝塞尔曲线(直线)：lineTo( x, y )</li>
+            <li>二次贝塞尔曲线：<br>quadraticCurveTo( cp1x, cp1y, x, y )</li>
+            <li>三次贝塞尔曲线：<br>bezierCurveTo( cp1x, cp1y, cp2x, cp2y, x, y )</li>
+          </ul>
+        </li>
+        <li>
+          <p>弧形</p>
+          <ul>
+            <li>未填充的弧形：arc( x, y, radius, startAngle, endAngle, anticlockwise )</li>
+            <li>扇形：arcTo( x1, y1, x2, y2, radius) </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="demo pull-left" style="width: 30%">
+        <canvas id="demo2"></canvas>
+      </div>
+    </li>
+    <li class="apinfo clearfix">
+      <div class="title">设置样式及颜色</div>
+      <ul class="content pull-left">
+        <li>fillStyle：设置或返回用于填充绘画的颜色、渐变或模式</li>
+        <li>strokeStyle：设置或返回x用于笔触的颜色、渐变或模式</li>
+        <li>globalAlpha: 设置透明度</li>
+        <li>
+          <p>阴影</p>
+          <ul>
+            <li>shadowColor：设置或返回用于阴影的颜色</li>
+            <li>shadowBlur：设置或返回用于填充绘画的颜色、渐变或模式</li>
+            <li>shadowOffsetX：设置或返回阴影与形状的水平距离</li>
+            <li>shadowOffsetY：设置或返回阴影与形状的垂直距离</li>
+          </ul>
+        </li>
+        <li>
+          <p>线条</p>
+          <ul>
+            <li>lineCap：设置或返回线条的结束点样式（butt、round、square）</li>
+            <li>lineJoin：设置或返回当两条线交汇时，边角的类型（bevel、round、miter）</li>
+            <li>lineWidth：设置或返回当前的线条宽度</li>
+            <li>miterLimit：设置或返回最大斜接长度</li>
+          </ul>
+        </li>
+        <li>
+          <p>渐变</p>
+          <ul>
+            <li>线性渐变：createLinearGradient( x0, y0, x1, y1 )</li>
+            <li>径向渐变：createRadialGradient( x0, y0, r0, x1, y1, r1 )</li>
+            <li>渐变颜色及位置指定：addColorStop( stop, color )</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="demo pull-left" style="width: 30%">
+        <canvas id="demo3"></canvas>
+      </div>
+    </li>
+    <li class="apinfo">
+      <div class="title">绘制文本</div>
+      <ul class="content" style="width: 70%;">
+        <li>fillText( text, x, y ) 在画布上绘制“被填充”的文本</li>
+        <li>strokeText( text, x, y ) 在画布上绘制文本（无填充）</li>
+        <li>
+          <p>设置文本样式</p>
+          <ul>
+            <li>font: 设置或返回文本内容的当前字体属性（和css的font一样）</li>
+            <li>textAlign: 设置或返回文本内容的当前对齐方式 (start, end, left, right or center)</li>
+            <li>textBaseline: 设置或返回在绘制文本时使用的当前文本基线(top, hanging, middle, alphabetic, ideographic, bottom)</li>
+            <!-- <li>direction: 设置文本的对齐方向(ltr, rtl, inherit)</li> -->
+            <li>measureText( text ): 返回包含指定文本宽度的对象（属性width获取宽度）</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="demo">
+        <canvas id="demo4"></canvas>
+      </div>
+    </li>
+    <li class="apinfo clearfix">
+      <div class="title">绘制图片</div>
+      <ul class="content pull-left" style="width: 60%;">
+        <li>
+          <p>图片绘制</p>
+          <ul>
+            <li>drawImage( image/canvas, x, y )：按图片原比例绘制</li>
+            <li>drawImage( image/canvas, x, y, width, height ): width和height控制绘制的图片大小。</li>
+            <li>drawImage( image/canvas, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight )：控制做切片显示</li>
+          </ul>
+        </li>
+        <li>
+          <p>图片数据方法</p>
+          <ul>
+            <li>toDataURL()：将canvas画板转化成base64数据</li>
+            <li>toBlob()：将canvas转换成bolb类型</li>
+          </ul>
+        </li>
+        <li style="list-style: none">
+          <img src="../images/demo_5.png" style="width: 100%;">
+        </li>
+      </ul>
+      <div class="demo pull-left" style="height: calc(100% - 180px);width: 30%;">
+        <canvas id="demo5"></canvas>
+      </div>
+    </li>
+    <li class="apinfo">
+      <div class="title">变形</div>
+      <ul class="content">
+        <li>save(): 保存当前环境的状态</li>
+        <li>restore(): 恢复之前保存过的路径状态和属性</li>
+        <li>scale( x, y ): 缩放当前绘图</li>
+        <li>translate( x, y ): 重新设置画布上的(0,0)位置</li>
+        <li>rotate( angle ): 选择当前绘图，单位为“弧度”，角度转弧度公式(degrees*Math.PI/180)</li>
+        <li>transform( m11, m12, m21, m22, dx, dy ): 替换绘图的当前转换矩阵</li>
+        <li>setTransform(): 将当前转换重置为单元矩阵，然后运行transform()</li>
+      </ul>
+      <div class="demo">
+        <canvas id="demo6"></canvas>
+      </div>
+    </li>
+    <li class="apinfo">
+      <div class="title">基本动画</div>
+      <ul class="content" style="width: 100%">
+        <li>动画，其实是一个创造运动假象的过程，通俗讲就是，动画是由一幅幅不同的静态画面以极快的速度连续播放从而产生物体运动或变化。由于快速频率，我们的眼睛就会欺骗我们的大脑，也就是前面说的运动假象。</li>
+        <li>
+          <div class="title">如何在canvas上产生动画</div>
+          <ul>
+            <li>清空canvas（使用clearRect()或全图绘制）</li>
+            <li>保存canvas状态（可选）</li>
+            <li>绘制动画图形</li>
+            <li>恢复canvas状态（一般在第二步的基础上使用）</li>
+          </ul>
+        </li>
+        <li>
+          <div class="title">用来绘制动画的方法</div>
+          <ul>
+            <li>使用时间控制器：setInterval( function, delay ) || setTimeout( function, delay )</li>
+            <li>
+              <p>window.requestAnimationFrame( function )</p>
+              <p>优点：1.由系统来决定回调函数的执行时机，具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。</p>
+              <p>2.当页面处理未激活的状态下,当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销</p>
+              <p>3.使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。</p>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <div class="demo" style="position: absolute;right: 0;top: 25%">
+        <canvas id="animation" width="300" height="300"></canvas>
+      </div>
+    </li>
+    <li class="apinfo">
+      <div class="title">其他</div>
+      <ul class="content" style="width: 60%">
+        <li>clip()： 从原始画布剪切任意形状和尺寸的区域</li>
+        <li>isPointInPath( x, y )：检测指定的点是否在当前路径中，在则返回true。</li>
+        <li>createPattern( image/canvas/video, repeat )： 在指定的方向内重复绘制指定的元素</li>
+        <li>globalCompositeOperation： 设置或返回新图像如何绘制到已有的图像上。(布尔运算) </li>
+      </ul>
+      <div class="demo" style="height: 480px;width: 40%">
+        <iframe src="../globalCompositeOperation.html" frameborder="0" style="width: 100%;height:100%"></iframe>
+      </div>
+    </li>
+  </ul>
+  <div class="ctrl-left" style="display: none">上一页</div>
+  <div class="ctrl-right">下一页</div>
+  <script src="../lib/jquery.min.js"></script>
+  <script src="../javascripts/starrySky.js"></script>
+  <script>
+    const body = document.getElementsByTagName('body')[0];
+    starrySky();
+    carousel();
+    demo1();
+
+    function coord() {
+      const obj = getCas('coord');
+      const offseX = $(obj.fa)[0].offsetLeft + 20;
+      const offseY = $(obj.fa)[0].offsetTop + 120;
+      $(obj.cas).on('mousemove', function (e) {
+        const x = e.clientX - offseX;
+        const y = e.clientY - offseY;
+        const width = obj.cas.width;
+        const height = obj.cas.height;
+        let textX = x;
+        let textY = y;
+        obj.ctx.font = '48px serif'
+        obj.ctx.fillStyle = '#fff';
+        obj.ctx.clearRect(0, 0, obj.cas.width, obj.cas.height);
+        if (x < 100) {
+          textX += 50;
+        }
+        if (y < 100) {
+          ;
+          textY += 50
+        }
+        if (x > width - 300) {
+          textX -= 300;
+        }
+        obj.ctx.fillText('x:' + x + ', y:' + y, textX, textY)
+      })
+    }
+
+    function getCas(id) {
+      const canvas = document.getElementById(id);
+      const context = canvas.getContext('2d');
+      const father = $(canvas).parent();
+      canvas.width = father.width();
+      canvas.height = father.height();
+      return {
+        cas: canvas,
+        ctx: context,
+        fa: father
+      }
+    }
+
+    function demo1() {
+      const obj = getCas('demo1');
+      const images = new Image();
+      drawImg(images, obj.cas, obj.ctx);
+      images.src = '../images/demo_1.png';
+    }
+
+    function demo2() {
+      const obj = getCas('demo2');
+      obj.cas.height = obj.fa.prev().height();
+      const width = obj.cas.width;
+      const height = obj.cas.height;
+      obj.ctx.fillStyle = "#fff";
+      obj.ctx.strokeStyle = "#fff";
+      obj.ctx.beginPath();
+      // obj.ctx.fillRect(0, 0, width, height);
+      // ----------------矩形------------
+      obj.ctx.rect(0, 20, 200, 30);
+      obj.ctx.moveTo(0, 70)
+      obj.ctx.lineTo(width, 70);
+      // ----------------矩形1------------
+      obj.ctx.fillRect(0, 90, 200, 30);
+      obj.ctx.moveTo(0, 140)
+      obj.ctx.lineTo(width, 140);
+      // ----------------矩形2------------
+      obj.ctx.strokeRect(0, 160, 200, 30);
+      obj.ctx.moveTo(0, 210)
+      obj.ctx.lineTo(width, 210);
+      // ----------------矩形3------------
+      obj.ctx.fillRect(0, 230, 200, 30);
+      obj.ctx.clearRect(10, 235, 100, 20);
+      obj.ctx.moveTo(0, 280)
+      obj.ctx.lineTo(width, 280);
+      // ----------------贝塞尔曲线(直线)------------
+      obj.ctx.moveTo(0, 300)
+      obj.ctx.lineTo(0, 320);
+      obj.ctx.lineTo(20, 320);
+      obj.ctx.moveTo(0, 340)
+      obj.ctx.lineTo(width, 340);
+      // ----------------二次贝塞尔曲线------------
+      obj.ctx.moveTo(0, 360);
+      obj.ctx.quadraticCurveTo(0, 400, width, 360);
+      obj.ctx.moveTo(0, 420)
+      obj.ctx.lineTo(width, 420);
+      // ----------------三次贝塞尔曲线------------
+      // obj.ctx.moveTo(80, 470);
+      obj.ctx.bezierCurveTo(80, 440, 0, 470, 80, 520);
+      obj.ctx.moveTo(80, 470);
+      obj.ctx.bezierCurveTo(80, 440, 160, 470, 80, 520);
+      obj.ctx.moveTo(180, 470);
+      obj.ctx.bezierCurveTo(220, 470, 260, 530, 300, 470);
+      obj.ctx.moveTo(0, 570);
+      obj.ctx.lineTo(width, 570);
+      obj.ctx.stroke();
+      obj.ctx.closePath();
+      // ----------------弧形------------
+      obj.ctx.beginPath();
+      obj.ctx.arc(80, 610, 30, 0, 2 * Math.PI);
+      obj.ctx.stroke();
+      obj.ctx.closePath();
+      // obj.ctx.fill();
+      // obj.ctx.
+    }
+
+    function demo3() {
+      const obj = getCas('demo3');
+      obj.cas.height = obj.fa.prev().height();
+      const width = obj.cas.width;
+      const height = obj.cas.height;
+      // obj.ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      // obj.ctx.fillRect(0,0,width,height);
+      // ---------------fillStyle--------------------------
+      obj.ctx.beginPath();
+      for (var i = 0; i < 6; i++) {
+        for (var j = 0; j < 6; j++) {
+          obj.ctx.fillStyle = 'rgb(' + Math.floor(255 - 42.5 * i) + ',' +
+            Math.floor(255 - 42.5 * j) + ',0)';
+          obj.ctx.fillRect(j * 25, i * 25, 25, 25);
+        }
+      }
+      obj.ctx.closePath();
+      // ---------------strokeStyle--------------------------
+      for (var i = 0; i < 6; i++) {
+        for (var j = 0; j < 6; j++) {
+          obj.ctx.globalAlpha = j / 10
+          const style = 'rgb(0,' + Math.floor(255 - 42.5 * i) + ',' +
+            Math.floor(255 - 42.5 * j) + ')'
+          obj.ctx.strokeStyle = style;
+          obj.ctx.beginPath();
+          obj.ctx.arc(170 + 12.5 + j * 25, 12.5 + i * 25, 10, 0, Math.PI * 2, true);
+          obj.ctx.stroke();
+          console.log(style);
+        }
+      }
+      obj.ctx.closePath();
+      // -----------------shadow------------------------
+      obj.ctx.globalAlpha = 1
+      obj.ctx.strokeStyle = '#fff';
+      obj.ctx.beginPath();
+      obj.ctx.shadowColor = '#fff';
+      obj.ctx.shadowBlur = 5;
+      obj.ctx.shadowOffsetX = 10;
+      obj.ctx.shadowOffsetY = 10;
+      obj.ctx.rect(0, 210, width / 2, 40);
+      obj.ctx.stroke();
+      obj.ctx.closePath();
+
+      // -----------------line------------------------
+      obj.ctx.shadowBlur = 0;
+      obj.ctx.shadowOffsetX = 0;
+      obj.ctx.shadowOffsetY = 0;
+      obj.ctx.beginPath();
+      obj.ctx.lineCap = 'butt';
+      obj.ctx.lineJoin = 'bevel';
+      obj.ctx.lineWidth = 10;
+      // ------线对比-------
+      obj.ctx.moveTo(20, 270);
+      obj.ctx.lineTo(20, 320);
+      // ------角度对比-------
+      obj.ctx.lineTo(60, 270);
+      obj.ctx.lineTo(120, 320);
+      obj.ctx.lineTo(180, 270);
+      // ------角度对比-------
+      obj.ctx.stroke();
+      obj.ctx.closePath();
+      obj.ctx.beginPath();
+      obj.ctx.lineCap = 'round';
+      obj.ctx.lineJoin = 'round';
+      obj.ctx.lineWidth = 20;
+      // ------线对比-------
+      // obj.ctx.moveTo(50, 270);
+      // obj.ctx.lineTo(50, 320);
+      // ------角度对比-------
+      obj.ctx.moveTo(20, 340);
+      obj.ctx.lineTo(20, 390);
+      obj.ctx.lineTo(60, 340);
+      obj.ctx.lineTo(120, 390);
+      obj.ctx.lineTo(180, 340);
+      // ------角度对比-------
+      obj.ctx.stroke();
+      obj.ctx.closePath();
+      obj.ctx.beginPath();
+      obj.ctx.lineCap = 'square';
+      obj.ctx.lineJoin = 'miter';
+      obj.ctx.miterLimit = 1;
+      obj.ctx.lineWidth = 30;
+      // ------线对比-------
+      // obj.ctx.moveTo(100, 270);
+      // obj.ctx.lineTo(100, 320);
+      // ------角度对比-------
+      obj.ctx.moveTo(30, 430);
+      obj.ctx.lineTo(30, 480);
+      obj.ctx.lineTo(80, 430);
+      obj.ctx.lineTo(120, 480);
+      obj.ctx.lineTo(180, 430);
+      // ------角度对比-------
+      obj.ctx.stroke();
+      obj.ctx.closePath();
+      // ---------------------------线性渐变------------
+      const lineargradient = obj.ctx.createLinearGradient(0, 10, width, 10);
+      lineargradient.addColorStop(0, 'white');
+      lineargradient.addColorStop(1, 'black');
+      obj.ctx.fillStyle = lineargradient;
+      obj.ctx.fillRect(0, 500, width, 40);
+      // ---------------------------径向渐变------------
+      const radgradient = obj.ctx.createRadialGradient(40, 600, 0, 40, 600, 60);
+      radgradient.addColorStop(0, 'white');
+      radgradient.addColorStop(1, 'black');
+      obj.ctx.fillStyle = radgradient;
+      obj.ctx.fillRect(0, 560, 80, 80);
+    }
+
+    function demo4() {
+      const obj = getCas('demo4');
+      obj.cas.height = 300;
+      obj.ctx.fillStyle = '#fff';
+      obj.ctx.font = '24px serif';
+      obj.ctx.textBaseline = 'top';
+      obj.ctx.fillText('前端部', 0, 60);
+      obj.ctx.font = '32px serif';
+      const w1 = obj.ctx.measureText("前端部").width;
+      obj.ctx.textBaseline = 'middle';
+      obj.ctx.fillText('研究院', w1, 60);
+      obj.ctx.font = '48px serif';
+      const w2 = obj.ctx.measureText("研究院").width;
+      obj.ctx.textBaseline = 'bottom';
+      obj.ctx.strokeText('HOMOLO', w1 + w2, 60);
+
+      obj.ctx.font = '28px serif';
+      obj.ctx.textAlign = 'left';
+      obj.ctx.fillText('前端部', obj.cas.width / 2, 120);
+      obj.ctx.textAlign = 'right';
+      obj.ctx.fillText('前端部', obj.cas.width / 2, 150);
+      obj.ctx.textAlign = 'center';
+      obj.ctx.fillText('前端部', obj.cas.width / 2, 180);
+    }
+
+    function demo5() {
+      const obj = getCas('demo5');
+      const images = new Image();
+      drawImg(images, obj.cas, obj.ctx)
+      images.src = '../images/Canvas_drawimage.jpg';
+    }
+
+    function demo6() {
+      const obj = getCas('demo6');
+
+
+    }
+
+    function demo7() {
+
+    }
+
+    function demo8() {
+
+    }
+
+    function drawImg(img, cas, ctx) {
+      img.onload = function () {
+        const scale = cas.width / this.naturalWidth;
+        cas.height = this.naturalHeight * scale;
+        ctx.drawImage(this, 0, 0, cas.width, cas.height);
+      }
+    }
+
+    function carousel() {
+      let infoidx = 0;
+      $('.apinfo').eq(infoidx).addClass('active');
+      $('.ctrl-left').on('click', function () {
+        infoidx--;
+        if (infoidx <= 0) {
+          infoidx = 0;
+          $(this).hide();
+        }
+        $('.ctrl-right').show();
+        toggle();
+      })
+      $('.ctrl-right').on('click', function () {
+        infoidx++;
+        if (infoidx >= $('.apinfo').length - 1) {
+          infoidx = $('.apinfo').length - 1;
+          $(this).hide();
+        }
+        $('.ctrl-left').show();
+        toggle();
+      })
+
+      function getDemo() {
+        switch (infoidx) {
+          case 0:
+            demo1();
+            break;
+          case 1:
+            coord();
+            break;
+          case 2:
+            demo2();
+            break;
+          case 3:
+            demo3();
+            break;
+          case 4:
+            demo4();
+            break;
+          case 5:
+            demo5();
+            break;
+          case 6:
+            demo6();
+          case 7:
+            animation();;
+            break;
+          default:
+            break;
+        }
+      }
+
+      function toggle() {
+        const cur = $('.apinfo').eq(infoidx);
+        $('.apinfo').removeClass('active').removeClass('next').removeClass('prev');
+        cur.addClass('active');
+        cur.prev().addClass('prev');
+        cur.next().addClass('next');
+        getDemo();
+      }
+
+    }
+
+    function animation() {
+      var sun = new Image();
+      var moon = new Image();
+      var earth = new Image();
+
+      function init() {
+        sun.src = '../images/Canvas_sun.png';
+        moon.src = '../images/Canvas_moon.png';
+        earth.src = '../images/Canvas_earth.png';
+        window.requestAnimationFrame(draw);
+      }
+
+      function draw() {
+        var ctx = document.getElementById('animation').getContext('2d');
+        ctx.globalCompositeOperation = 'destination-over';
+        ctx.clearRect(0, 0, 300, 300); // clear canvas
+
+        ctx.fillStyle = 'rgba(0,0,0,0.4)';
+        ctx.strokeStyle = 'rgba(0,153,255,0.4)';
+        ctx.save();
+        ctx.translate(150, 150);
+
+        // Earth
+        var time = new Date();
+        ctx.rotate(((2 * Math.PI) / 60) * time.getSeconds() + ((2 * Math.PI) / 60000) * time.getMilliseconds());
+        ctx.translate(105, 0);
+        ctx.fillRect(0, -12, 50, 24); // Shadow
+        ctx.drawImage(earth, -12, -12);
+
+        // Moon
+        ctx.save();
+        ctx.rotate(((2 * Math.PI) / 6) * time.getSeconds() + ((2 * Math.PI) / 6000) * time.getMilliseconds());
+        ctx.translate(0, 28.5);
+        ctx.drawImage(moon, -3.5, -3.5);
+        ctx.restore();
+
+        ctx.restore();
+
+        ctx.beginPath();
+        ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+        ctx.stroke();
+
+        ctx.drawImage(sun, 0, 0, 300, 300);
+
+        window.requestAnimationFrame(draw);
+      }
+
+      init();
+    }
+  </script>
+</body>
+
+</html>
