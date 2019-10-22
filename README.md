@@ -26,7 +26,6 @@
 
 > 可以看到右边是canvas使用以上API画出来的图形，看似第一个跟第三个一摸一样，它们有什么区别呢？rect()方法会根据你最后使用的是fill()方法还是stroke()方法，渲染成不同的样子。lineTo方法只能使用stroke()绘制，因为它是一个路径，不存在填充的情况。所以使用fill()方法时，lineTo绘制的方法是看不到的。
 
-* 贝塞尔曲线
 * 绘制直线：lineTo( x, y ) 
 * 二次贝塞尔曲线：quadraticCurveTo()  
 * 创建三次贝塞尔曲线：bezierCurveTo()  
