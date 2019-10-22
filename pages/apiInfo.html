@@ -155,19 +155,20 @@
         <canvas id="demo5"></canvas>
       </div>
     </li>
-    <li class="apinfo">
+    <li class="apinfo clearfix">
       <div class="title">变形</div>
-      <ul class="content">
+      <ul class="content pull-left">
         <li>save(): 保存当前环境的状态</li>
         <li>restore(): 恢复之前保存过的路径状态和属性</li>
         <li>scale( x, y ): 缩放当前绘图</li>
         <li>translate( x, y ): 重新设置画布上的(0,0)位置</li>
         <li>rotate( angle ): 选择当前绘图，单位为“弧度”，角度转弧度公式(degrees*Math.PI/180)</li>
         <li>transform( m11, m12, m21, m22, dx, dy ): 替换绘图的当前转换矩阵</li>
-        <li>setTransform(): 将当前转换重置为单元矩阵，然后运行transform()</li>
+        <li>isPointInPath( x, y )：检测指定的点是否在当前路径中，在则返回true。</li>
       </ul>
-      <div class="demo">
+      <div class="demo pull-left" style="width: 30%">
         <canvas id="demo6"></canvas>
+        <div class="tooltip"></div>
       </div>
     </li>
     <li class="apinfo">
@@ -203,10 +204,11 @@
     <li class="apinfo">
       <div class="title">其他</div>
       <ul class="content" style="width: 60%">
-        <li>clip()： 从原始画布剪切任意形状和尺寸的区域</li>
-        <li>isPointInPath( x, y )：检测指定的点是否在当前路径中，在则返回true。</li>
-        <li>createPattern( image/canvas/video, repeat )： 在指定的方向内重复绘制指定的元素</li>
-        <li>globalCompositeOperation： 设置或返回新图像如何绘制到已有的图像上。(布尔运算) </li>
+        <li>getImageData(): 获取 canvas 的像素数据</li>
+        <li>
+          <p>globalCompositeOperation： 设置或返回新图像如何绘制到已有的图像上。(布尔运算)</p>
+          <p>画布中先后绘制的内容会根据不同的模式来呈现效果。默认为后绘制的覆盖先绘制的，也可以设置为先绘制的覆盖后绘制的，甚至可以让两次绘制重叠部分镂空或者提亮颜色。</p>
+        </li>
       </ul>
       <div class="demo" style="height: 480px;width: 40%">
         <iframe src="../globalCompositeOperation.html" frameborder="0" style="width: 100%;height:100%"></iframe>
@@ -469,17 +471,138 @@
     }
 
     function demo6() {
-      const obj = getCas('demo6');
-
-
-    }
-
-    function demo7() {
-
-    }
-
-    function demo8() {
-
+      const chartData = {
+        a: 10,
+        b: 30,
+        c: 20,
+        d: 5,
+        e: 35
+      }
+      const colors = ['#447BFB', '#6AB4FF', '#44FBDC', '#FBD444', '#6B70FF'];
+      const cvs = document.getElementById('demo6');
+      const ctx = cvs.getContext('2d');
+      const father = $(cvs).parent();
+      const info = {
+        list: [],
+        colors: [],
+        lineW: 10,
+        curIndex: -1,
+        tooltip: {
+          x: 0,
+          y: 0
+        }
+      }
+      const chart = {
+        init: (width, height, data) => {
+          cvs.width = width;
+          cvs.height = height;
+          info.cX = cvs.width / 2;
+          info.cY = cvs.height / 2;
+          info.radius = cvs.height * .6 / 2;
+          ctx.lineCap = 'round';
+          info.gap = Math.asin(info.lineW / info.radius) + .05;
+          draw.dealdata(chartData);
+          draw.circle(info.lineW);
+        }
+      }
+      const getTooltip = (index) => {
+        console.log(index)
+        if (index > -1) {
+          const item = info.list[index];
+          const tooltip = document.getElementsByClassName('tooltip')[0];
+          let content = `${item.name}:${item.value}`;
+          tooltip.style.left = info.tooltip.x + 'px';
+          tooltip.style.top = info.tooltip.y + 'px';
+          tooltip.innerText = content
+        }
+      }
+      const draw = {
+        calcsum: (data) => {
+          let sum = 0;
+          for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+              const element = data[key];
+              sum += Number.parseFloat(element);
+            }
+          }
+          return sum;
+        },
+        dealdata: (data) => {
+          info.list = [];
+          info.total = draw.calcsum(chartData);
+          for (const key in data) {
+            if (data.hasOwnProperty(key)) {
+              const element = data[key];
+              const rangle = (element / info.total) * 2 * Math.PI;
+              const d = new cirline(info.cX, info.cY, rangle, key, data[key]);
+              info.list.push(d);
+            }
+          }
+        },
+        circle: (lineW) => {
+          const tooltip = document.getElementsByClassName('tooltip')[0];
+          const list = info.list;
+          let rot = 0
+          ctx.lineWidth = lineW;
+          ctx.strokeStyle = 'rgba(37, 230, 249, .1)';
+          ctx.beginPath();
+          ctx.arc(info.cX, info.cY, info.radius * .9, 0, 2 * Math.PI, false);
+          ctx.stroke();
+          list.forEach((item, index) => {
+            ctx.strokeStyle = colors[index];
+            ctx.save();
+            ctx.translate(info.cX, info.cY);
+            ctx.rotate(rot);
+            ctx.beginPath();
+            ctx.arc(0, 0, info.radius, 0, (item.rangle - info.gap), false);
+            ctx.stroke();
+            if (ctx.isPointInStroke(info.eX, info.eY)) {
+              getTooltip(index);
+            }
+            ctx.closePath();
+            // ctx.lineWidth = 3;
+            // ctx.strokeStyle = '#ffffff';
+            // ctx.fillStyle = colors[index];
+            // ctx.beginPath();
+            // ctx.rotate((item.rangle - info.gap) / 2);
+            // ctx.arc(info.radius + 5, 0, 3, 0, 2 * Math.PI, false);
+            // ctx.stroke();
+            // ctx.fill();
+            ctx.restore();
+            rot += item.rangle;
+          })
+        }
+      }
+      const chartclick = (e) => {
+        console.log(e);
+        const event = e || window.event;
+        const pX = event.pageX || event.clientX;
+        const pY = event.pageY || event.clientY;
+        const cX = cvs.offsetLeft;
+        const cY = cvs.offsetTop;
+        const eX = pX + document.body.offsetLeft - cX;
+        const eY = pY + document.body.offsetTop - cY;
+        info.eX = eX;
+        info.eY = eY;
+        info.tooltip.x = pX;
+        info.tooltip.y = pY;
+        ctx.clearRect(0, 0, cvs.width, cvs.height);
+        draw.dealdata(chartData);
+        draw.circle(info.lineW);
+      }
+      class cirline {
+        constructor(x, y, rangle, name, value) {
+          this.x = x;
+          this.y = y;
+          this.rangle = rangle;
+          this.radius = info.radius;
+          this.name = name;
+          this.value = value;
+        }
+      }
+      father.height(father.width());
+      chart.init(father.width(), father.width(), chartData);
+      cvs.addEventListener('mousemove', chartclick, false);
     }
 
     function drawImg(img, cas, ctx) {
