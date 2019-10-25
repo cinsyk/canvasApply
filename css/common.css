@@ -27,6 +27,10 @@ p {
   float: left;
 }
 
+.pull-right {
+  float: right;
+}
+
 .clearfix {
   overflow: hidden;
 }

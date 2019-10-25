@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!-- saved from url=(0074)http://view.jqueryfuns.com/2014/9/1/1313_38764d539a8f5aff35582a5d0d45511e/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>canvas-example21</title>
+    <style>
+    body{margin:0; padding: 0; background: #000; }
+    canvas{margin: 40px auto; background: #FFF; display: block;}
+    </style>
+</head>
+    <body>
+        <canvas width="800" height="600" id="canvas">
+        <p>您的浏览器不支持canvas</p>
+        </canvas>
+    
+    <script type="text/javascript">
+    var PI = Math.PI;
+    var PI2 = 2 * PI;
+    // 第一步
+    var canvas = document.querySelector( '#canvas' );
+    // 第二步
+    var ctx = canvas.getContext( '2d' );
+    ctx.translate( 400, 300 );
+    function draw() {
+        
+        ctx.save();
+        ctx.strokeStyle = 'rgba( 0, 0, 0, 1 )';
+        ctx.fillStyle = 'rgba( 0, 0, 0, 1 )';
+
+        // 大圆
+        ctx.beginPath();
+        ctx.arc( 0, 0, 160, 0, PI2 );
+        ctx.clip();
+        ctx.closePath();
+        ctx.stroke();
+        // 小圆
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = '#FFF';
+        ctx.arc(0, 0, 150, 0, PI2, false );
+        ctx.closePath();
+        ctx.stroke();
+        
+        // 阴面 阳面
+        ctx.restore();
+        ctx.beginPath();
+        ctx.arc( 0, 0, 150, PI / 2, -PI / 2, false );
+        ctx.arc( 0, -75, 75, -PI / 2, PI / 2, false );
+        ctx.arc( 0, 75, 75, -PI / 2, PI / 2, true );
+        ctx.closePath();
+        ctx.fill();
+
+        
+        // 阴面内的阳
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = '#FFF';
+        ctx.arc( 0, -75, 20, 0, PI2, false );
+        ctx.closePath();
+        ctx.fill();
+
+        // 阳面的阴
+        ctx.restore();
+        ctx.beginPath();
+        ctx.arc( 0, 75, 20, 0, PI2 );
+        ctx.closePath();
+        ctx.fill();
+
+    }
+    function draw2() {
+        ctx.restore();
+        ctx.beginPath();
+        ctx.fillRect( -40, -260, 100, 15 );
+        ctx.fillRect( -40, -235, 100, 15 );
+        ctx.fillRect( -40, -210, 100, 15 );
+        // 旋转
+        
+        ctx.rotate( PI2 / 8 );
+
+        ctx.beginPath();
+        ctx.fillRect( -40, -260, 100, 15 );
+        ctx.fillRect( -40, -235, 100, 15 );
+        ctx.fillRect( -40, -210, 45, 15 );
+        ctx.fillRect( 15, -210, 45, 15 );
+
+        // 旋转
+        ctx.rotate( PI2 / 8 );
+        ctx.beginPath();
+        ctx.fillRect( -40, -260, 45, 15 );
+        ctx.fillRect( 15, -260, 45, 15 );
+        ctx.fillRect( -40, -235, 100, 15 );
+        ctx.fillRect( -40, -210, 45, 15 );
+        ctx.fillRect( 15, -210, 45, 15 );
+
+        // 旋转
+        ctx.rotate( PI2 / 8 );
+        ctx.fillRect( -40, -260, 100, 15 );
+        ctx.fillRect( -40, -235, 45, 15 );
+        ctx.fillRect( 15, -235, 45, 15 );
+        ctx.fillRect( -40, -210, 45, 15 );
+        ctx.fillRect( 15, -210, 45, 15 );
+
+        // 旋转
+        ctx.rotate( PI2 / 8 );
+        ctx.fillRect( -40, -260, 45, 15 );
+        ctx.fillRect( 15, -260, 45, 15 );
+        ctx.fillRect( -40, -235, 45, 15 );
+        ctx.fillRect( 15, -235, 45, 15 );
+        ctx.fillRect( -40, -210, 45, 15 );
+        ctx.fillRect( 15, -210, 45, 15 );
+
+        // 旋转
+        ctx.rotate( PI2 / 8 );
+        ctx.fillRect( -40, -260, 45, 15 );
+        ctx.fillRect( 15, -260, 45, 15 );
+        ctx.fillRect( -40, -235, 45, 15 );
+        ctx.fillRect( 15, -235, 45, 15 );
+        ctx.fillRect( -40, -210, 100, 15 );
+
+        // 旋转
+        ctx.rotate( PI2 / 8 );
+        ctx.fillRect( -40, -260, 100, 15 );
+        ctx.fillRect( -40, -235, 45, 15 );
+        ctx.fillRect( 15, -235, 45, 15 );
+        ctx.fillRect( -40, -210, 100, 15 );
+
+        // 旋转
+        ctx.rotate( PI2 / 8 );
+        ctx.fillRect( -40, -260, 45, 15 );
+        ctx.fillRect( 15, -260, 45, 15 );
+        ctx.fillRect( -40, -235, 100, 15 );
+        ctx.fillRect( -40, -210, 100, 15 );
+        // 旋转
+        ctx.rotate( PI2 / 8 );
+    }
+    
+    draw2();
+    draw();
+    setInterval(function(){
+        ctx.clearRect( -400, -300, 800, 600 );
+        ctx.rotate( PI2 / 64 );
+        draw();
+        draw2();
+    },80);
+    </script>
+
+</body></html>

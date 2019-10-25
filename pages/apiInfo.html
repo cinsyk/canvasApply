@@ -35,9 +35,17 @@
       </div>
     </li>
     <li class="apinfo">
+      <div class="demo" style="width: 100%;height: 100%;">
+        <canvas id="demo0"></canvas>
+      </div>
+    </li>
+    <li class="apinfo">
       <div class="title">canvas坐标系</div>
       <div class="demo" style="width: 80%; height: 600px;padding-top: 120px;">
+        <span class="pull-left" style="font-size: 32px">原点</span>
+        <span class="pull-right" style="font-size: 32px">x轴</span>
         <canvas id="coord" style="border: 1px solid #fff"></canvas>
+        <span class="pull-left" style="font-size: 32px">y轴</span>
       </div>
     </li>
     <li class="apinfo clearfix">
@@ -223,6 +231,7 @@
     const body = document.getElementsByTagName('body')[0];
     starrySky();
     carousel();
+    demo0();
     demo1();
 
     function coord() {
@@ -266,6 +275,62 @@
       }
     }
 
+    function demo0() {
+      const cas = document.getElementById('demo0');
+      const ctx = cas.getContext('2d');
+      const pa = $(cas).parent();
+      const height = pa.height();
+      const width = pa.width();
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const spacing = 15;
+      const gWidth = 140;
+      const gHeight = 15;
+      cas.width = width;
+      cas.height = height;
+      ctx.strokeStyle = 'rgba(255,255,255,.2)';
+      ctx.fillStyle = 'rgba(255,255,255,.2)';
+      ctx.strokeRect(0, 0, width, height);
+      ctx.moveTo(width / 2, 0);
+      ctx.lineTo(width / 2, height);
+      ctx.moveTo(0, height / 2);
+      ctx.lineTo(width, height / 2);
+      ctx.stroke();
+      ctx.save();
+      ctx.strokeStyle = '#fff';
+      ctx.fillStyle = '#fff';
+      ctx.translate(centerX, centerY);
+      // 使用translate属性后，画布的坐标轴重置了,原点到了画布中心。向上向左为负，向下向右为正，所以我们需要计算一下我们要绘制的坐标。
+      const startX = centerY - gHeight * 2;
+      const interval = spacing + gHeight;
+      drawGossip();
+      window.requestAnimationFrame(drawGossip);
+      function drawGossip() {
+        //  画布中心点重置了。所以清除范围需要重新计算
+        ctx.clearRect(-centerX, -centerY, width, height);
+        ctx.rotate(-0.001 * Math.PI);
+        // ctx.rotate(-Math.PI * 2 / 8);
+        for (let index = 0; index < 8; index++) {
+          for (let j = 0; j < 3; j++) {
+            const drawLine = (index < 4 && j === 2) || (index > 1 && index < 6 && j === 1) || ((index === 1 || index === 3 || index === 4 || index === 6) && j === 0);
+            if (drawLine) {
+              disconnect(j);
+            } else {
+              ctx.fillRect(startX - interval * j, -gWidth / 2, gHeight, gWidth);
+            }
+          }
+          ctx.rotate(Math.PI * 2 / 8);
+        }
+
+        function disconnect(n) {
+          const miniWidth = gWidth / 2 - spacing / 2;
+          ctx.fillRect(startX - interval * n, 0 + spacing / 2, gHeight, miniWidth);
+          ctx.fillRect(startX - interval * n, - miniWidth - spacing / 2, gHeight, miniWidth);
+        }
+        window.requestAnimationFrame(drawGossip);
+      }
+    }
+
     function demo1() {
       const obj = getCas('demo1');
       const images = new Image();
@@ -284,41 +349,27 @@
       // obj.ctx.fillRect(0, 0, width, height);
       // ----------------矩形------------
       obj.ctx.rect(0, 20, 200, 30);
-      obj.ctx.moveTo(0, 70)
-      obj.ctx.lineTo(width, 70);
       // ----------------矩形1------------
       obj.ctx.fillRect(0, 90, 200, 30);
-      obj.ctx.moveTo(0, 140)
-      obj.ctx.lineTo(width, 140);
       // ----------------矩形2------------
       obj.ctx.strokeRect(0, 160, 200, 30);
-      obj.ctx.moveTo(0, 210)
-      obj.ctx.lineTo(width, 210);
       // ----------------矩形3------------
       obj.ctx.fillRect(0, 230, 200, 30);
       obj.ctx.clearRect(10, 235, 100, 20);
-      obj.ctx.moveTo(0, 280)
-      obj.ctx.lineTo(width, 280);
       // ----------------贝塞尔曲线(直线)------------
       obj.ctx.moveTo(0, 300)
       obj.ctx.lineTo(0, 320);
       obj.ctx.lineTo(20, 320);
-      obj.ctx.moveTo(0, 340)
-      obj.ctx.lineTo(width, 340);
       // ----------------二次贝塞尔曲线------------
       obj.ctx.moveTo(0, 360);
       obj.ctx.quadraticCurveTo(0, 400, width, 360);
-      obj.ctx.moveTo(0, 420)
-      obj.ctx.lineTo(width, 420);
       // ----------------三次贝塞尔曲线------------
-      // obj.ctx.moveTo(80, 470);
+      obj.ctx.moveTo(80, 470);
       obj.ctx.bezierCurveTo(80, 440, 0, 470, 80, 520);
       obj.ctx.moveTo(80, 470);
       obj.ctx.bezierCurveTo(80, 440, 160, 470, 80, 520);
       obj.ctx.moveTo(180, 470);
       obj.ctx.bezierCurveTo(220, 470, 260, 530, 300, 470);
-      obj.ctx.moveTo(0, 570);
-      obj.ctx.lineTo(width, 570);
       obj.ctx.stroke();
       obj.ctx.closePath();
       // ----------------弧形------------
@@ -560,14 +611,6 @@
               getTooltip(index);
             }
             ctx.closePath();
-            // ctx.lineWidth = 3;
-            // ctx.strokeStyle = '#ffffff';
-            // ctx.fillStyle = colors[index];
-            // ctx.beginPath();
-            // ctx.rotate((item.rangle - info.gap) / 2);
-            // ctx.arc(info.radius + 5, 0, 3, 0, 2 * Math.PI, false);
-            // ctx.stroke();
-            // ctx.fill();
             ctx.restore();
             rot += item.rangle;
           })
