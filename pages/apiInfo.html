@@ -18,6 +18,11 @@
   <canvas id="starrySky"></canvas>
   <ul class="apisinfo">
     <li class="apinfo">
+      <div class="demo" style="width: 100%;height: 100%;">
+        <canvas id="demo0"></canvas>
+      </div>
+    </li>
+    <li class="apinfo">
       <div class="title">基本用法</div>
       <ul class="content pull-left" style="padding: 20px 20px 20px 120px;width: 50%">
         <li>Canvas是一个可以使用脚本（通常为Javascript，其它比如 Java Applets or JavaFX/JavaFX Script）来绘制图形，默认大小为300像素×150像素的HTML元素。</li>
@@ -32,11 +37,6 @@
       </ul>
       <div class="demo pull-left">
         <canvas id="demo1"></canvas>
-      </div>
-    </li>
-    <li class="apinfo">
-      <div class="demo" style="width: 100%;height: 100%;">
-        <canvas id="demo0"></canvas>
       </div>
     </li>
     <li class="apinfo">
@@ -198,8 +198,12 @@
             <li>使用时间控制器：setInterval( function, delay ) || setTimeout( function, delay )</li>
             <li>
               <p>window.requestAnimationFrame( function )</p>
-              <p>优点：1.由系统来决定回调函数的执行时机，具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。</p>
-              <p>2.当页面处理未激活的状态下,当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销</p>
+              <p>
+                优点：1.由系统来决定回调函数的执行时机，具体一点讲，如果屏幕刷新率是60Hz,那么回调函数就每16.7ms被执行一次，如果刷新率是75Hz，那么这个时间间隔就变成了1000/75=13.3ms，换句话说就是，requestAnimationFrame的步伐跟着系统的刷新步伐走。它能保证回调函数在屏幕每一次的刷新间隔中只被执行一次，这样就不会引起丢帧现象，也不会导致动画出现卡顿的问题。
+              </p>
+              <p>
+                2.当页面处理未激活的状态下,当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销
+              </p>
               <p>3.使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。</p>
             </li>
           </ul>
@@ -303,16 +307,67 @@
       // 使用translate属性后，画布的坐标轴重置了,原点到了画布中心。向上向左为负，向下向右为正，所以我们需要计算一下我们要绘制的坐标。
       const startX = centerY - gHeight * 2;
       const interval = spacing + gHeight;
-      drawGossip();
-      window.requestAnimationFrame(drawGossip);
+
+      window.requestAnimationFrame(running);
+
+      function running() {
+        ctx.clearRect(-centerX, -centerY, width, height);
+        ctx.rotate(-0.005 * Math.PI);
+        drawGossip();
+        // ctx.save();
+        // ctx.rotate(0.003 * Math.PI);
+        universe();
+        // ctx.restore();
+        window.requestAnimationFrame(running);
+      }
+
+      function universe() {
+        const radius = centerY - interval * 5 - gHeight * 3;
+        const miniArc = radius / 2;
+        // arc( x, y, radius, startAngle, endAngle, anticlockwise )
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.save();
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.arc(0, 0, radius, Math.PI, 2 * Math.PI);
+        ctx.moveTo(0, -miniArc);
+        ctx.arc(-miniArc, 0, miniArc, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.restore();
+        ctx.beginPath();
+        ctx.arc(miniArc, 0, miniArc, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(miniArc, 0, 20, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(-miniArc, 0, 20, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+        window.requestAnimationFrame(universe);
+      }
+
       function drawGossip() {
         //  画布中心点重置了。所以清除范围需要重新计算
-        ctx.clearRect(-centerX, -centerY, width, height);
-        ctx.rotate(-0.001 * Math.PI);
         // ctx.rotate(-Math.PI * 2 / 8);
         for (let index = 0; index < 8; index++) {
           for (let j = 0; j < 3; j++) {
-            const drawLine = (index < 4 && j === 2) || (index > 1 && index < 6 && j === 1) || ((index === 1 || index === 3 || index === 4 || index === 6) && j === 0);
+            const drawLine = (index < 4 && j === 2) || (index > 1 && index < 6 && j === 1) || ((index === 1 || index ===
+              3 || index === 4 || index === 6) && j === 0);
             if (drawLine) {
               disconnect(j);
             } else {
@@ -325,9 +380,8 @@
         function disconnect(n) {
           const miniWidth = gWidth / 2 - spacing / 2;
           ctx.fillRect(startX - interval * n, 0 + spacing / 2, gHeight, miniWidth);
-          ctx.fillRect(startX - interval * n, - miniWidth - spacing / 2, gHeight, miniWidth);
+          ctx.fillRect(startX - interval * n, -miniWidth - spacing / 2, gHeight, miniWidth);
         }
-        window.requestAnimationFrame(drawGossip);
       }
     }
 
