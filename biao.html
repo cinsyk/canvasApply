@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas width="600" height="400" id="canvas" style="border:1px solid #555"></canvas>
+</body>
+<script>
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+  ctx.translate(300, 200); //坐标系300-200, 笔粗4
+  function draw() {     //draw函数
+    ctx.clearRect(-300, -200, 600, 400);     //初始化
+    var now = new Date();
+    var secondR = now.getSeconds() / 30 * Math.PI;   //算角度
+    ctx.save();   //存档1：坐标系0, 笔粗4
+    //画时针
+    ctx.rotate(-secondR);
+    
+    ctx.restore();    //读存档2：坐标系300-200,-90°
+    ctx.save();
+    //画秒针
+    //循环：转稿纸画线
+    for (var i = 0; i < 12; i++) {
+      ctx.rotate(Math.PI / 6);
+      ctx.moveTo(125, 0);
+      ctx.lineTo(135, 0);
+    }
+    ctx.stroke();
+    ctx.beginPath();  //新纸
+    ctx.lineWidth = 2;   //坐标系300-200 笔粗2
+    for (var i = 0; i < 60; i++) {
+      ctx.rotate(Math.PI / 30);
+      ctx.moveTo(130, 0);
+      ctx.lineTo(135, 0);
+    }
+    ctx.stroke();
+    //读档，位移，旋转，印制
+    ctx.beginPath();
+    ctx.rotate(secondR);
+    ctx.moveTo(-25, 0);
+    ctx.lineTo(115, 0);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#53C686";
+    ctx.stroke();
+    //画表芯：新纸，读档，印圆
+    ctx.restore();    //读存档1：坐标系0, 笔粗4
+    ctx.beginPath();
+    ctx.fillStyle = "#53C686";
+    ctx.arc(300, 200, 8, 0, 2 * Math.PI);
+    ctx.fill();
+    // ctx.restore();    //读存档2：坐标系300-200,-90°
+    window.requestAnimationFrame(draw); //自适应帧率，递归调用
+  }
+  function universe() {
+    const radius = centerY - interval * 5 - gHeight * 3;
+    const miniArc = radius / 2;
+    // arc( x, y, radius, startAngle, endAngle, anticlockwise )
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI);
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.save();
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, radius, Math.PI, 2 * Math.PI);
+    ctx.moveTo(0, -miniArc);
+    ctx.arc(-miniArc, 0, miniArc, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.restore();
+    ctx.beginPath();
+    ctx.arc(miniArc, 0, miniArc, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(miniArc, 0, 20, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(-miniArc, 0, 20, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.closePath();
+  }
+  function drawGossip() {
+    //  画布中心点重置了。所以清除范围需要重新计算
+    // ctx.rotate(-Math.PI * 2 / 8);
+    for (let index = 0; index < 8; index++) {
+      for (let j = 0; j < 3; j++) {
+        const drawLine = (index < 4 && j === 2) || (index > 1 && index < 6 && j === 1) || ((index === 1 || index ===
+          3 || index === 4 || index === 6) && j === 0);
+        if (drawLine) {
+          disconnect(j);
+        } else {
+          ctx.fillRect(startX - interval * j, -gWidth / 2, gHeight, gWidth);
+        }
+      }
+      ctx.rotate(Math.PI * 2 / 8);
+    }
+
+    function disconnect(n) {
+      const miniWidth = gWidth / 2 - spacing / 2;
+      ctx.fillRect(startX - interval * n, 0 + spacing / 2, gHeight, miniWidth);
+      ctx.fillRect(startX - interval * n, -miniWidth - spacing / 2, gHeight, miniWidth);
+    }
+  }
+  draw();     //第一次draw
+</script>
+
+</html>

@@ -18,6 +18,7 @@
   <canvas id="starrySky"></canvas>
   <ul class="apisinfo">
     <li class="apinfo">
+      <a href="https://codepen.io/cindystar-the-styleful/pen/ExxXqqy?editors=0010" target="" style="position: absolute;right: 10%;top:20%;color: #fff">线上编辑</a>
       <div class="demo" style="width: 100%;height: 100%;">
         <canvas id="demo0"></canvas>
       </div>
@@ -308,17 +309,22 @@
       const startX = centerY - gHeight * 2;
       const interval = spacing + gHeight;
 
-      window.requestAnimationFrame(running);
+      window.requestAnimationFrame(draw);
 
-      function running() {
-        ctx.clearRect(-centerX, -centerY, width, height);
-        ctx.rotate(-0.005 * Math.PI);
+      function draw() {     //draw函数
+        ctx.clearRect(-centerX, -centerY, width, height);     //初始化
+        var now = new Date();
+        ctx.save();
+        //  (2 * Math.PI) / 60 每秒旋转的度数  乘以 当前的秒数 + 每毫秒转的角度
+        var secondR = ((2 * Math.PI) / 60) * now.getSeconds() + ((2 * Math.PI) / 60000) * now.getMilliseconds();
+        ctx.rotate(-secondR);
         drawGossip();
-        // ctx.save();
-        // ctx.rotate(0.003 * Math.PI);
+        ctx.restore();
+        ctx.save();
+        ctx.rotate(secondR);
         universe();
-        // ctx.restore();
-        window.requestAnimationFrame(running);
+        ctx.restore();
+        window.requestAnimationFrame(draw); //自适应帧率，递归调用
       }
 
       function universe() {
@@ -358,7 +364,6 @@
         ctx.arc(-miniArc, 0, 20, 0, 2 * Math.PI);
         ctx.fill();
         ctx.closePath();
-        window.requestAnimationFrame(universe);
       }
 
       function drawGossip() {
