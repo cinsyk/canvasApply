@@ -18,12 +18,6 @@
   <canvas id="starrySky"></canvas>
   <ul class="apisinfo">
     <li class="apinfo">
-      <a href="https://codepen.io/cindystar-the-styleful/pen/ExxXqqy?editors=0010" target="" style="position: absolute;right: 10%;top:20%;color: #fff">线上编辑</a>
-      <div class="demo" style="width: 100%;height: 100%;">
-        <canvas id="demo0"></canvas>
-      </div>
-    </li>
-    <li class="apinfo">
       <div class="title">基本用法</div>
       <ul class="content pull-left" style="padding: 20px 20px 20px 120px;width: 50%">
         <li>Canvas是一个可以使用脚本（通常为Javascript，其它比如 Java Applets or JavaFX/JavaFX Script）来绘制图形，默认大小为300像素×150像素的HTML元素。</li>
@@ -50,35 +44,47 @@
       </div>
     </li>
     <li class="apinfo clearfix">
-      <div class="title">绘制形状</div>
+      <div class="title">矩形与圆</div>
       <ul class="content pull-left">
         <li>
           <p>矩形</p>
           <ul>
-            <li>未填充的矩形：rect( x, y, width, height )</li>
+            <li>待填充的矩形：rect( x, y, width, height )</li>
             <li>填充矩形：fillRect( x, y, width, height )</li>
             <li>边框矩形：strokeRect( x, y, width, height )</li>
             <li>清除矩形：clearRect(x, y, width, height)</li>
           </ul>
         </li>
+        <li>待填充的圆：arc( x, y, radius, startAngle, endAngle, anticlockwise ) </li>
+      </ul>
+      <div class="demo pull-left">
+        <canvas id="demo21"></canvas>
+      </div>
+    </li>
+    <li class="apinfo clearfix">
+      <div class="title">贝塞尔曲线</div>
+      <ul class="content pull-left">
         <li>
-          <p>贝塞尔曲线</p>
-          <ul>
-            <li>一次贝塞尔曲线(直线)：lineTo( x, y )</li>
-            <li>二次贝塞尔曲线：<br>quadraticCurveTo( cp1x, cp1y, x, y )</li>
-            <li>三次贝塞尔曲线：<br>bezierCurveTo( cp1x, cp1y, cp2x, cp2y, x, y )</li>
-          </ul>
+          <p>一次贝塞尔曲线(直线)：lineTo( x, y )</p>
+          <img src="../images/1674efc1d4d11922" alt="">
         </li>
         <li>
-          <p>弧形</p>
-          <ul>
-            <li>未填充的弧形：arc( x, y, radius, startAngle, endAngle, anticlockwise )</li>
-            <li>扇形：arcTo( x1, y1, x2, y2, radius) </li>
-          </ul>
+          <p>二次贝塞尔曲线：<br>quadraticCurveTo( cp1x, cp1y, x, y )</p>
+          <img src="../images/1674efc1f01a80fc" alt="">
+        </li>
+        <li>
+          <p>三次贝塞尔曲线：<br>bezierCurveTo( cp1x, cp1y, cp2x, cp2y, x, y )</p>
+          <img src="../images/1674efc1fdd312e3" alt="">
         </li>
       </ul>
-      <div class="demo pull-left" style="width: 30%">
-        <canvas id="demo2"></canvas>
+      <div class="demo pull-left">
+        <canvas id="demo22"></canvas>
+      </div>
+    </li>
+    <li class="apinfo">
+      <a href="https://codepen.io/cindystar-the-styleful/pen/ExxXqqy?editors=0010" target="" style="position: absolute;right: 10%;top:20%;color: #fff">线上编辑</a>
+      <div class="demo" style="width: 100%;height: 100%;">
+        <canvas id="demo0"></canvas>
       </div>
     </li>
     <li class="apinfo clearfix">
@@ -397,47 +403,80 @@
       images.src = '../images/demo_1.png';
     }
 
-    function demo2() {
-      const obj = getCas('demo2');
-      obj.cas.height = obj.fa.prev().height();
+    function demo21() {
+      const obj = getCas('demo21');
+      obj.cas.height = 400;
       const width = obj.cas.width;
       const height = obj.cas.height;
       obj.ctx.fillStyle = "#fff";
       obj.ctx.strokeStyle = "#fff";
+      obj.ctx.font = '24px serif';
+      obj.ctx.textBaseline = 'top';
       obj.ctx.beginPath();
       // obj.ctx.fillRect(0, 0, width, height);
       // ----------------矩形------------
-      obj.ctx.rect(0, 20, 200, 30);
-      // ----------------矩形1------------
-      obj.ctx.fillRect(0, 90, 200, 30);
-      // ----------------矩形2------------
-      obj.ctx.strokeRect(0, 160, 200, 30);
-      // ----------------矩形3------------
-      obj.ctx.fillRect(0, 230, 200, 30);
-      obj.ctx.clearRect(10, 235, 100, 20);
-      // ----------------贝塞尔曲线(直线)------------
-      obj.ctx.moveTo(0, 300)
-      obj.ctx.lineTo(0, 320);
-      obj.ctx.lineTo(20, 320);
-      // ----------------二次贝塞尔曲线------------
-      obj.ctx.moveTo(0, 360);
-      obj.ctx.quadraticCurveTo(0, 400, width, 360);
-      // ----------------三次贝塞尔曲线------------
-      obj.ctx.moveTo(80, 470);
-      obj.ctx.bezierCurveTo(80, 440, 0, 470, 80, 520);
-      obj.ctx.moveTo(80, 470);
-      obj.ctx.bezierCurveTo(80, 440, 160, 470, 80, 520);
-      obj.ctx.moveTo(180, 470);
-      obj.ctx.bezierCurveTo(220, 470, 260, 530, 300, 470);
+      obj.ctx.fillText('context.rect(0, 20, 200, 30);context.fill();', 200, 0);
+      obj.ctx.rect(0, 0, 150, 30);
+      obj.ctx.fill();
+      // ----------------矩形------------
+      obj.ctx.fillText('context.rect(0, 20, 200, 30);context.stroke();', 200, 40);
+      obj.ctx.rect(0, 40, 150, 30);
       obj.ctx.stroke();
-      obj.ctx.closePath();
+      // ----------------矩形1------------
+      obj.ctx.fillRect(0, 80, 150, 30);
+      obj.ctx.fillText('context.fillRect(0, 80, 150, 30);', 200, 80);
+      // ----------------矩形2------------
+      obj.ctx.strokeRect(0, 120, 150, 30);
+      obj.ctx.fillText('context.strokeRect(0, 120, 150, 30);', 200, 120);
+      // ----------------矩形3------------
+      obj.ctx.fillText('context.fillRect(0, 180, 150, 50);', 200, 170);
+      obj.ctx.fillText('context.clearRect(10, 185, 100, 20);', 200, 200);
+      obj.ctx.fillRect(0, 180, 150, 50);
+      obj.ctx.clearRect(10, 185, 100, 20);
       // ----------------弧形------------
       obj.ctx.beginPath();
-      obj.ctx.arc(80, 610, 30, 0, 2 * Math.PI);
+      obj.ctx.fillText('context.arc(80, 280, 30, 0, 2 * Math.PI);', 200, 250);
+      obj.ctx.fillText('context.stroke();', 200, 280);
+      obj.ctx.arc(80, 280, 30, 0, 2 * Math.PI);
       obj.ctx.stroke();
       obj.ctx.closePath();
-      // obj.ctx.fill();
-      // obj.ctx.
+    }
+
+    function demo22() {
+      const obj = getCas('demo22');
+      obj.cas.height = obj.fa.prev().height();
+      const width = obj.cas.width;
+      const height = obj.cas.height;
+      obj.ctx.font = '20px serif';
+      obj.ctx.textBaseline = 'top';
+      obj.ctx.fillStyle = "#fff";
+      obj.ctx.strokeStyle = "#fff";
+      obj.ctx.beginPath();
+      // ----------------贝塞尔曲线(直线)------------
+      obj.ctx.fillText('context.moveTo(0, 0);', 30, 0);
+      obj.ctx.fillText('context.lineTo(20, 40);', 30, 20);
+      obj.ctx.fillText('context.lineTo(0, 40);', 30, 40);
+      obj.ctx.fillText('context.lineTo(20, 80);', 30, 60);
+      obj.ctx.moveTo(0, 0)
+      obj.ctx.lineTo(20, 40);
+      obj.ctx.lineTo(0, 40);
+      obj.ctx.lineTo(20, 80);
+      // ----------------二次贝塞尔曲线------------
+      obj.ctx.moveTo(0, 200);
+      obj.ctx.fillText('context.quadraticCurveTo(50, 280, 100, 240);', 120, 260);
+      obj.ctx.quadraticCurveTo(50, 280, 100, 240);
+      // ----------------三次贝塞尔曲线------------
+      obj.ctx.moveTo(80, 470);
+      obj.ctx.fillText('context.bezierCurveTo(80, 440, 0, 470, 80, 520);', 120, 470);
+      obj.ctx.bezierCurveTo(80, 440, 0, 470, 80, 520);
+      obj.ctx.moveTo(80, 470);
+      obj.ctx.fillText('context.bezierCurveTo(80, 440, 160, 470, 80, 520);', 120, 500);
+      obj.ctx.bezierCurveTo(80, 440, 160, 470, 80, 520);
+      obj.ctx.moveTo(180, 470);
+      // obj.ctx.fillText('context.bezierCurveTo(220, 470, 260, 530, 300, 470);', 80, 540);
+      // obj.ctx.bezierCurveTo(220, 470, 260, 530, 300, 470);
+      obj.ctx.stroke();
+      obj.ctx.closePath();
     }
 
     function demo3() {
@@ -746,7 +785,8 @@
             coord();
             break;
           case 2:
-            demo2();
+            demo21();
+            demo22();
             break;
           case 3:
             demo3();
