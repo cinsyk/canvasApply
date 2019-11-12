@@ -84,7 +84,7 @@
     $('.piclist-item').on('click', function () {
       imgsrc = $(this).find('img').attr('src');
       images = new Image();
-      images.setAttribute('crossOrigin', 'Anonymous');
+//       images.setAttribute('crossOrigin', 'Anonymous');
       images.onload = drawImageActualSize;
       images.src = imgsrc;
     })
@@ -133,7 +133,7 @@
         return;
       }
       bdimg = new Image();
-      bdimg.setAttribute('crossOrigin', 'Anonymous');
+//       bdimg.setAttribute('crossOrigin', 'Anonymous');
       bdimg.src = bdimgsrc;
       $('.border-pic').attr('src', bdimgsrc).show();
     })
